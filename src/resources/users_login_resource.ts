@@ -97,20 +97,10 @@ class LoginResource extends BaseResource {
    * @return Promise<Drash.Http.Response>
    */
   protected async logInUser(): Promise<Drash.Http.Response> {
-    let inputUser: UserEntity =
+    const inputUser: UserEntity =
       (this.request.getBodyParam("user") as UserEntity);
 
-    if (!inputUser) {
-      const email = this.request.getBodyParam("email") as string;
-      const password = this.request.getBodyParam("password") as string;
-      if (email || password) {
-        inputUser = { email, password } as UserEntity;
-      } else {
-        return this.errorResponse(422, "Email field required.");
-      }
-    }
-
-    if (!inputUser.email) {
+    if (!inputUser || !inputUser.email) {
       return this.errorResponse(422, "Email field required.");
     }
     if (!ValidationService.isEmail(inputUser.email)) {

@@ -1,5 +1,5 @@
 <template>
-  <ul class="tag-list" v-if="tags.length !== 1 && !!tags[0]" data-qa="tag-list-container">
+  <ul class="tag-list" v-if="tags && tags.length > 0" data-qa="tag-list-container">
     <li
       class="tag-default tag-pill tag-outline"
       v-for="(tag, index) of tags"

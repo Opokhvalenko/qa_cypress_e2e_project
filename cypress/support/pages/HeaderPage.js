@@ -1,46 +1,48 @@
-class HeaderPage {
+import PageObject from './PageObject.js';
+
+class HeaderPage extends PageObject {
   clickHomeLogo() {
-    cy.get('[data-qa="home-logo-link"]').click();
+    this.getHomeLogoLink().click();
   }
 
   clickHomeLinkAnon() {
-    cy.get('[data-qa="home-link"]').click();
+    this.getHomeLinkAnon().click();
   }
 
   clickHomeLinkAuth() {
-    cy.get('[data-qa="home-link-auth"]').click();
+    this.getHomeLinkAuth().click();
   }
 
   clickSignInLink() {
-    cy.get('[data-qa="signin-link"]').click();
+    this.getSignInLink().click();
   }
 
   clickSignUpLink() {
-    cy.get('[data-qa="signup-link"]').click();
+    this.getSignUpLink().click();
   }
 
   clickNewArticleLink() {
-    cy.get('[data-qa="new-article-link"]').click();
+    this.getNewArticleLink().click();
   }
 
   clickSettingsLink() {
-    cy.get('[data-qa="settings-link"]').click();
+    this.getSettingsLink().click();
   }
 
   clickProfileLink() {
-    cy.get('[data-qa="profile-link"]').click();
+    this.getProfileLink().click();
   }
 
   shouldShowSignInLink() {
-    cy.get('[data-qa="signin-link"]').should('be.visible');
+    this.getSignInLink().should('be.visible');
   }
 
   shouldShowNewArticleLink() {
-    cy.get('[data-qa="new-article-link"]').should('be.visible');
+    this.getNewArticleLink().should('be.visible');
   }
 
   shouldShowProfileLink() {
-    cy.get('[data-qa="profile-link"]').should('be.visible');
+    this.getProfileLink().should('be.visible');
   }
 }
 

@@ -18,7 +18,6 @@ describe('User Following/Unfollowing Functionality', () => {
       cy.request({
         method: 'POST',
         url: '/users',
-        form: true,
         body: {
           username: generatedUser.username,
           email: generatedUser.email,
@@ -45,7 +44,6 @@ describe('User Following/Unfollowing Functionality', () => {
     cy.request({
       method: 'POST',
       url: `/profiles/${targetUser.username}`,
-      form: true,
       body: {
         action: 'follow',
         user_id: currentUser.id
@@ -53,9 +51,8 @@ describe('User Following/Unfollowing Functionality', () => {
     }).then((response) => {
       expect(response.status).to.eq(200);
       expect(response.body.profile.following).to.equal(true);
+      ProfilePage.visit(targetUser.username);
     });
-
-    ProfilePage.visit(targetUser.username);
 
     ProfilePage.getUnfollowButton().should('be.visible');
     ProfilePage.getUnfollowButton().click();

@@ -53,7 +53,18 @@ describe('User Settings Functionality', () => {
     cy.contains('Update successful!').should('be.visible');
     cy.get('.swal-button--confirm').click();
 
-    commonPage.getProfileLink().should('be.visible');
+    SettingsPage.getLogoutButton().click();
+    cy.url().should('include', '/');
+
+    cy.clearCookies();
+    cy.visit('/#/login');
+    cy.get('[data-qa="login-page"]').should('be.visible');
+    cy.get('[data-qa="email-input"]').type(newEmail);
+    cy.get('[data-qa="password-input"]').type(user.password);
+    cy.get('[data-qa="login-button"]').click();
+
+    cy.url().should('not.include', '/login');
+    commonPage.getProfileLink().should('contain', user.username);
   });
 
   it('should allow a user to update their password', () => {
@@ -87,7 +98,6 @@ describe('User Settings Functionality', () => {
     cy.request({
       method: 'POST',
       url: '/users',
-      form: true,
       body: {
         username: anotherUsername,
         email: anotherEmail,

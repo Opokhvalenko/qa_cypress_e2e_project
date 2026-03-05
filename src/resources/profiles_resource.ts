@@ -29,7 +29,8 @@ class ProfilesResource extends BaseResource {
     if (currentUser) {
       const client = await BaseModel.connect();
       const followResult = await client.query(
-        `SELECT id FROM user_follows WHERE follower_id = '${currentUser.id}' AND followed_id = '${result[0].id}'`
+        `SELECT id FROM user_follows WHERE follower_id = $1 AND followed_id = $2`,
+        [currentUser.id, result[0].id]
       );
       client.release();
       following = followResult.rowCount! > 0;
@@ -69,12 +70,14 @@ class ProfilesResource extends BaseResource {
 
     if (action === "unfollow") {
       await client.query(
-        `DELETE FROM user_follows WHERE follower_id = '${userId}' AND followed_id = '${targetUser.id}'`
+        `DELETE FROM user_follows WHERE follower_id = $1 AND followed_id = $2`,
+        [userId, targetUser.id]
       );
     } else {
       try {
         await client.query(
-          `INSERT INTO user_follows (follower_id, followed_id) VALUES ('${userId}', '${targetUser.id}') ON CONFLICT DO NOTHING`
+          `INSERT INTO user_follows (follower_id, followed_id) VALUES ($1, $2) ON CONFLICT DO NOTHING`,
+          [userId, targetUser.id]
         );
       } catch (error) {
         console.log("Follow insert error:", error);
@@ -82,7 +85,8 @@ class ProfilesResource extends BaseResource {
     }
 
     const followResult = await client.query(
-      `SELECT id FROM user_follows WHERE follower_id = '${userId}' AND followed_id = '${targetUser.id}'`
+      `SELECT id FROM user_follows WHERE follower_id = $1 AND followed_id = $2`,
+      [userId, targetUser.id]
     );
     client.release();
 

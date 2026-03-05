@@ -8,7 +8,6 @@ Cypress.Commands.add('registerAndLogin', (email, password, username) => {
   cy.request({
     method: 'POST',
     url: '/users',
-    form: true,
     body: {
       username: userUsername,
       email: userEmail,
@@ -30,10 +29,11 @@ Cypress.Commands.add('login', (email, password) => {
   cy.request({
     method: 'POST',
     url: '/users/login',
-    form: true,
     body: {
-      email,
-      password
+      user: {
+        email,
+        password
+      }
     }
   }).then((response) => {
     expect(response.status).to.eq(200);
@@ -55,13 +55,14 @@ Cypress.Commands.add('createArticle', (articleData) => {
     cy.request({
       method: 'POST',
       url: '/articles',
-      form: true,
       body: {
-        author_id: articleData.author_id || 0,
-        title: articleData.title,
-        description: articleData.description,
-        body: articleData.body,
-        tags: articleData.tags ? articleData.tags.join(',') : ''
+        article: {
+          author_id: articleData.author_id || 0,
+          title: articleData.title,
+          description: articleData.description,
+          body: articleData.body,
+          tags: articleData.tags ? articleData.tags.join(',') : ''
+        }
       },
       headers: {
         Cookie: `drash_sess=${token}`
