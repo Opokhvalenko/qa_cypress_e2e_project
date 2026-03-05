@@ -250,8 +250,17 @@ class ArticlesResource extends BaseResource {
    * @return Promise<Drash.Http.Response>
    */
   protected async createArticle(): Promise<Drash.Http.Response> {
-    const inputArticle: ArticleEntity =
+    let inputArticle: ArticleEntity =
       (this.request.getBodyParam("article") as ArticleEntity);
+
+    if (!inputArticle) {
+      const title = this.request.getBodyParam("title") as string;
+      const description = this.request.getBodyParam("description") as string;
+      const body = this.request.getBodyParam("body") as string;
+      const tags = this.request.getBodyParam("tags") as string;
+      const author_id = this.request.getBodyParam("author_id") as unknown as number;
+      inputArticle = { title, description, body, tags, author_id } as ArticleEntity;
+    }
 
     if (!inputArticle.title) {
       return this.errorResponse(400, "You must set the article title.");
